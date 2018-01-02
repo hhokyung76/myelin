@@ -8,6 +8,8 @@ public class Test {
 
 	public static void main(String[] args) {
 
+		System.setProperty("HADOOP_USER_NAME", "hdfs");
+		System.setProperty("hadoop.home.dir", "e:\\hadoop\\");
 		HiveConf hiveConf = new HiveConf();
 		hiveConf.setIntVar(HiveConf.ConfVars.METASTORETHRIFTCONNECTIONRETRIES, 3);
 		hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, "thrift://mdc1nn01:9083");

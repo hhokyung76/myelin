@@ -6,7 +6,8 @@ myelin_roomid string,
 myelin_flag string,
 myelin_subject string,
 myelin_content string,
-create_time timestamp)
+create_time timestamp,
+first_time String)
 PARTITIONED BY (
   p_year string,
  p_month string,
@@ -17,7 +18,7 @@ STORED AS orc tblproperties ("orc.compress"="ZLIB");
 
 
 
-CREATE TABLE `myelin_dayly_contents_history`(
+CREATE TABLE `myelin_daily_contents_history`(
 id string,
 cust_id string,
 cust_email string,
@@ -26,6 +27,7 @@ myelin_flag string,
 myelin_subject string,
 myelin_content string,
 create_time timestamp,
+first_time String,
 myelin_p_minute string)
 PARTITIONED BY (
   p_year string,

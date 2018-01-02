@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.facebook.presto.jdbc.internal.joda.time.DateTimeUtils;
-import com.ltmh.framework.util.OpenStringUtils;
+import com.myelin.builder.framework.util.OpenStringUtils;
 
 /**
  * @author redskin

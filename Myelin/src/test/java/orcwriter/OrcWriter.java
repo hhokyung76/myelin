@@ -14,7 +14,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.UserGroupInformation;
 
-import com.ltmh.framework.util.OpenStringUtils;
+import com.myelin.builder.framework.util.OpenStringUtils;
 
 import org.apache.hadoop.hive.ql.io.orc.*;
 import org.apache.hadoop.hive.serde2.io.TimestampWritable;
