@@ -209,7 +209,7 @@ public class MyelinOrcProcessor implements Runnable {
 				orcRecord.setFieldValue(2, new Text(cpObj.getCustEmail()));
 				orcRecord.setFieldValue(3, new Text(cpObj.getMyelinRoomId()));
 				orcRecord.setFieldValue(4, new Text(cpObj.getMyelinFlag()));
-				orcRecord.setFieldValue(5, new Text(cpObj.getMyelinSubject()));
+				orcRecord.setFieldValue(5, new Text(cpObj.getMyelinSubject()+" "+cpObj.getMyelinFlag()));
 				orcRecord.setFieldValue(6, new Text(cpObj.getMyelinContent()));
 				orcRecord.setFieldValue(7, new TimestampWritable(new Timestamp(new Date().getTime())));
 				orcRecord.setFieldValue(8, new Text(cpObj.getFirstTime()));
