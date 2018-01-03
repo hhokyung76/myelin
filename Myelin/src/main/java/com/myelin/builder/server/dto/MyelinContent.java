@@ -2,7 +2,7 @@ package com.myelin.builder.server.dto;
 
 import java.io.Serializable;
 
-public class LtmhContent implements Serializable {
+public class MyelinContent implements Serializable {
 
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class LtmhContent implements Serializable {
 	private String ltmhSubject;
 	private String ltmhContent;
 	
-	public LtmhContent() {	}
+	public MyelinContent() {	}
 	
 	public String getId() {
 		return id;

@@ -7,6 +7,8 @@ import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.Partition;
+import org.apache.hadoop.hive.metastore.api.PrimaryKeysRequest;
+import org.apache.hadoop.hive.metastore.api.SQLPrimaryKey;
 import org.apache.hadoop.hive.metastore.api.hive_metastoreConstants;
 import org.apache.hadoop.hive.ql.metadata.Hive;
 import org.apache.thrift.TException;
@@ -68,8 +70,11 @@ public class HiveMetaStoreConnector {
     public List<String> getTablePartitionInformation(String dbName, String tableName){
         List<String> partitionsInfo = Lists.newArrayList();
         try {
-            List<String> partitionNames = hiveMetaStoreClient.listPartitionNames(dbName,tableName, (short) 10000);
+//        	hiveMetaStoreClient.getPartitionColumnStatistics(dbName, tableName, null, null);
+//            List<SQLPrimaryKey> partitionNames = hiveMetaStoreClient.getPrimaryKeys(new PrimaryKeysRequest(dbName, tableName));
+//            System.out.println("partitionNames: "+partitionNames.size());
             List<Partition> partitions = hiveMetaStoreClient.listPartitions(dbName,tableName, (short) 10000);
+            System.out.println("partitions: "+partitions.size());
             for(Partition partition:partitions){
                 StringBuffer sb = new StringBuffer();
                 sb.append(tableName);

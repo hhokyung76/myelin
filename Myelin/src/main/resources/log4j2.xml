@@ -11,7 +11,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.ltmh" level="debug" additivity="true">
+        <Logger name="com.myelin" level="debug" additivity="true">
             <AppenderRef ref="ConsoleAppender" />
         </Logger>
 

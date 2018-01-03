@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@MapperScan(value="com.ltmh.dao.hive", sqlSessionFactoryRef="dbHiveSqlSessionFactory")
+@MapperScan(value="com.myelin.builder.dao.hive", sqlSessionFactoryRef="dbHiveSqlSessionFactory")
 @EnableTransactionManagement
 public class DatabaseHiveConfig {
 
@@ -28,16 +28,7 @@ public class DatabaseHiveConfig {
 	
 	@Bean(name = "dbHiveDataSource")
     @ConfigurationProperties(prefix = "spring.hive.datasource")
-    public DataSource dbHiveDataSource() {
-//        return DataSourceBuilder.create().build();
-//        log.info("env h2: "+env.getProperty("spring.h2.datasource.driverClassName"));
-//		log.info("env h2: "+env.getProperty("spring.h2.datasource.url"));
-//		log.info("env h2: "+env.getProperty("spring.h2.datasource.username"));
-//		log.info("env hive: "+env.getProperty("spring.hive.datasource.driverClassName"));
-//		log.info("env hive: "+env.getProperty("spring.hive.datasource.url"));
-//		log.info("env presto: "+env.getProperty("spring.presto.datasource.driverClassName"));
-//		log.info("env presto: "+env.getProperty("spring.presto.datasource.url"));
-		
+    public DataSource dbHiveDataSource() {		
 		DriverManagerDataSource dataSource = new DriverManagerDataSource(); 
         dataSource.setDriverClassName(env.getProperty("spring.hive.datasource.driverClassName")); 
         dataSource.setUrl(env.getProperty("spring.hive.datasource.url")); 
@@ -51,7 +42,7 @@ public class DatabaseHiveConfig {
     public SqlSessionFactory dbHiveSqlSessionFactory(@Qualifier("dbHiveDataSource") DataSource dbHiveDataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dbHiveDataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/ltmh/dao/hive/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/myelin/builder/dao/hive/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
  

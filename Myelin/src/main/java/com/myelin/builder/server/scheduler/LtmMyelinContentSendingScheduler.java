@@ -47,7 +47,7 @@ public class LtmMyelinContentSendingScheduler {
 	
 	private static int number = 150;
 
-//	@Scheduled(cron = "40 0/10 7-23 * * ?")
+	@Scheduled(cron = "40 0/20 7-23 * * ?")
 	public void engWordToEmail() {
 		try {
 			number = number + 1;

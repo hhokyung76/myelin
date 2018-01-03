@@ -6,10 +6,10 @@
         </layout>
     </appender>
  
-    <logger name="org.tinyfarmer.hub" level="DEBUG"/>
-    <logger name="org.tinyfarmer.hub" level="INFO"/> 
-    <logger name="org.test.netty" level="DEBUG"/>
-    <logger name="org.test.netty" level="INFO"/> 
+    <logger name="com.myelin" level="DEBUG"/>
+    <logger name="com.myelin" level="INFO"/> 
+    <logger name="com.myelin" level="DEBUG"/>
+    <logger name="com.myelin" level="INFO"/> 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root> 

@@ -29,7 +29,7 @@ import com.myelin.builder.dao.hive.DbHiveMapper;
 import com.myelin.builder.dao.presto.DbPrestoMapper;
 import com.myelin.builder.framework.mail.MailSender;
 import com.myelin.builder.framework.util.OpenStringUtils;
-import com.myelin.builder.server.dto.LtmhContent;
+import com.myelin.builder.server.dto.MyelinContent;
 import com.myelin.builder.server.main.Customer;
 import com.myelin.builder.server.manager.MyelinQueueManager;
 import com.myelin.builder.server.util.LtmhUtils;
@@ -109,7 +109,7 @@ public class LtmhService {
 		return "Helldso " + this.name;
 	}
 	
-	public void addLtmhContentPlan(LtmhContent content) {
+	public void addLtmhContentPlan(MyelinContent content) {
 		MyelinContentPlan planContent = new MyelinContentPlan();
 		planContent.setCustEmail(content.getCustEmail());
 		planContent.setCustId(content.getCustId());

@@ -1,6 +1,6 @@
 package com.myelin.builder.server.dto;
 
-public class LtmhMailReceivingContent {
+public class MyelinMailReceivingContent {
 	
 
 	private String subject;

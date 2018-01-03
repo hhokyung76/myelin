@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.myelin.builder.app.http.service.LtmhService;
 import com.myelin.builder.core.util.StringUtil;
 import com.myelin.builder.framework.util.OpenStringUtils;
-import com.myelin.builder.server.dto.LtmhContent;
+import com.myelin.builder.server.dto.MyelinContent;
 
 import java.util.Locale;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class LtmhController {
 	}
 
 	@RequestMapping(value = { "/content/summit" }, method = RequestMethod.POST, produces = "text/html; charset=utf8")
-	public String submitContentAction(@ModelAttribute LtmhContent content, Locale locale, Model model,
+	public String submitContentAction(@ModelAttribute MyelinContent content, Locale locale, Model model,
 			HttpServletRequest request, HttpServletResponse response) {
 		String success = "SUCCESS";
 		// if (!isFarmId(request)) success = "FAIL";

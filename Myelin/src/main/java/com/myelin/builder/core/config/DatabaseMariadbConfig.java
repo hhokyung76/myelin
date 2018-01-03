@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@MapperScan(value="com.ltmh.dao.mariadb", sqlSessionFactoryRef="dbMariadbSqlSessionFactory")
+@MapperScan(value="com.myelin.builder.dao.mariadb", sqlSessionFactoryRef="dbMariadbSqlSessionFactory")
 @EnableTransactionManagement
 public class DatabaseMariadbConfig {
 	private static final Logger log = LogManager.getLogger(DatabaseMariadbConfig.class);
@@ -51,7 +51,7 @@ public class DatabaseMariadbConfig {
     public SqlSessionFactory dbMariadbSqlSessionFactory(@Qualifier("dbMariadbDataSource") DataSource dbMariadbDataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dbMariadbDataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/ltmh/dao/mariadb/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/myelin/builder/dao/mariadb/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
  

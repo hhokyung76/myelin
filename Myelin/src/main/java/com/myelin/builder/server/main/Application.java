@@ -45,14 +45,14 @@ import com.myelin.builder.server.db.PrestoDataSourceNative;
 import com.myelin.builder.server.hdfs.HadoopFileSystemUtil;
 import com.myelin.builder.server.manager.MyelinQueueManager;
 import com.myelin.builder.server.manager.MyelinServerPoolManager;
-import com.myelin.builder.server.process.LtmhHiveProcessor;
-import com.myelin.builder.server.process.LtmhOrcProcessor;
+import com.myelin.builder.server.process.MyelinHiveProcessor;
+import com.myelin.builder.server.process.MyelinOrcProcessor;
 
 import io.vertx.core.Vertx;
 
 @SpringBootApplication
 @Configuration
-@ComponentScan(basePackages = { "com.ltmh" }, basePackageClasses = Application.class)
+@ComponentScan(basePackages = { "com.myelin" }, basePackageClasses = Application.class)
 // @MapperScan(value = {"org.tinyfarmer.hub.dao.mapper"})
 public class Application implements CommandLineRunner {
 	private static final Logger log = LogManager.getLogger(Application.class);
@@ -60,7 +60,7 @@ public class Application implements CommandLineRunner {
 	@Autowired
 	private ApplicationContext context;
 	
-	DataSource dbH2DataSource;
+//	DataSource dbH2DataSource;
 
 	DataSource dbHiveDataSource;
 
@@ -68,8 +68,8 @@ public class Application implements CommandLineRunner {
 	
 	DataSource dbMariadbDataSource;
 
-	@Autowired
-	DatabaseH2Config databaseH2Config;
+//	@Autowired
+//	DatabaseH2Config databaseH2Config;
 	@Autowired
 	DatabaseHiveConfig databaseHiveConfig;
 	@Autowired
@@ -91,8 +91,8 @@ public class Application implements CommandLineRunner {
 	@Autowired
 	private HadoopFileSystemUtil hadoopFileSystemUtil;
 
-	private LtmhOrcProcessor ltmhOrcProcessor;
-	private LtmhHiveProcessor ltmhHiveProcessor;
+	private MyelinOrcProcessor myelinOrcProcessor;
+	private MyelinHiveProcessor myelinHiveProcessor;
 	
 	
 	@PostConstruct
@@ -178,15 +178,15 @@ public class Application implements CommandLineRunner {
 		// prestoDataSource.testQuery();
 		//
 		// hiveDataSource.testQuery();
-		dbH2DataSource = databaseH2Config.dbH2DataSource();
+//		dbH2DataSource = databaseH2Config.dbH2DataSource();
 		dbHiveDataSource = databaseHiveConfig.dbHiveDataSource();
 		dbPrestoDataSource = databasePrestoConfig.dbPrestoDataSource();
 		dbMariadbDataSource = databaseMariadbConfig.dbMariadbDataSource();
-		 log.info("h2 jdbc: "+dbH2DataSource.toString());
+//		 log.info("h2 jdbc: "+dbH2DataSource.toString());
 		 log.info("hive jdbc: "+dbHiveDataSource.toString());
 		 log.info("presto jdbc: "+dbPrestoDataSource.toString());
 
-		log.info("h2 jdbc: " + dbH2DataSource.toString());
+//		log.info("h2 jdbc: " + dbH2DataSource.toString());
 		log.info("hive jdbc: " + dbHiveDataSource.toString());
 		log.info("presto jdbc: " + dbPrestoDataSource.toString());
 
@@ -199,7 +199,7 @@ public class Application implements CommandLineRunner {
 		}
 
 		JdbcTemplate prestoTemplate = new JdbcTemplate(dbPrestoDataSource); //dbHiveDataSource.getHiveConnection();
-		List<Map<String, Object>> lists = prestoTemplate.queryForList("select cust_id, cust_email, ltmh_flag, ltmh_content from ltmh_contents_plan limit 1");
+		List<Map<String, Object>> lists = prestoTemplate.queryForList("select cust_id, cust_email, myelin_flag, myelin_content from myelin_contents_plan limit 1");
 		for (int ii = 0; ii < lists.size(); ii++) {
 		   log.info("ltmh_contents_plan presto map: "+lists.get(ii));
 		}
@@ -215,7 +215,7 @@ public class Application implements CommandLineRunner {
 		Connection prestoConn = dbPrestoDataSource.getConnection();
 		Statement stmt = prestoConn.createStatement();
 		
-		String query = "select * from ltmh_contents_plan";
+		String query = "select * from myelin_contents_plan";
 	    ResultSet rs = stmt.executeQuery(query);
 	    ResultSetMetaData rmd = rs.getMetaData();
 	    System.out.println("meta columnCount: "+rmd.getColumnCount());
@@ -248,25 +248,25 @@ public class Application implements CommandLineRunner {
 	    
 	    
 
-	    ltmhOrcProcessor = (LtmhOrcProcessor) context.getBean("ltmhOrcProcessor");
-	    ltmhOrcProcessor.setMyelinQueueManager(myelinQueueManager);
-	    ltmhOrcProcessor.setDbHiveDataSource(dbHiveDataSource);
-	    ltmhOrcProcessor.setDbPrestoDataSource(dbPrestoDataSource);
-	    ltmhOrcProcessor.setMyelinQueueManager(myelinQueueManager);
-	    ltmhOrcProcessor.setHadoopFileSystemUtil(hadoopFileSystemUtil);
-	    myelinServerPoolManager.execute(ltmhOrcProcessor);
-		myelinServerPoolManager.putThreadMap("LtmhOrcProcessor", ltmhOrcProcessor);
+	    myelinOrcProcessor = (MyelinOrcProcessor) context.getBean("myelinOrcProcessor");
+	    myelinOrcProcessor.setMyelinQueueManager(myelinQueueManager);
+	    myelinOrcProcessor.setDbHiveDataSource(dbHiveDataSource);
+	    myelinOrcProcessor.setDbPrestoDataSource(dbPrestoDataSource);
+	    myelinOrcProcessor.setMyelinQueueManager(myelinQueueManager);
+	    myelinOrcProcessor.setHadoopFileSystemUtil(hadoopFileSystemUtil);
+	    myelinServerPoolManager.execute(myelinOrcProcessor);
+		myelinServerPoolManager.putThreadMap("myelinOrcProcessor", myelinOrcProcessor);
 		
 
 
-		ltmhHiveProcessor = (LtmhHiveProcessor) context.getBean("ltmhHiveProcessor");
-		ltmhHiveProcessor.setMyelinQueueManager(myelinQueueManager);
-		ltmhHiveProcessor.setDbHiveDataSource(dbHiveDataSource);
-		ltmhHiveProcessor.setDbPrestoDataSource(dbPrestoDataSource);
-		ltmhHiveProcessor.setMyelinQueueManager(myelinQueueManager);
-		ltmhHiveProcessor.setHadoopFileSystemUtil(hadoopFileSystemUtil);
-	    myelinServerPoolManager.execute(ltmhHiveProcessor);
-		myelinServerPoolManager.putThreadMap("ltmhHiveProcessor", ltmhHiveProcessor);
+		myelinHiveProcessor = (MyelinHiveProcessor) context.getBean("myelinHiveProcessor");
+		myelinHiveProcessor.setMyelinQueueManager(myelinQueueManager);
+		myelinHiveProcessor.setDbHiveDataSource(dbHiveDataSource);
+		myelinHiveProcessor.setDbPrestoDataSource(dbPrestoDataSource);
+		myelinHiveProcessor.setMyelinQueueManager(myelinQueueManager);
+		myelinHiveProcessor.setHadoopFileSystemUtil(hadoopFileSystemUtil);
+	    myelinServerPoolManager.execute(myelinHiveProcessor);
+		myelinServerPoolManager.putThreadMap("myelinHiveProcessor", myelinHiveProcessor);
 	}
 
 	// @Bean

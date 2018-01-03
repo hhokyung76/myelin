@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@MapperScan(value="com.ltmh.dao.presto", sqlSessionFactoryRef="dbPrestoSqlSessionFactory")
+@MapperScan(value="com.myelin.builder.dao.presto", sqlSessionFactoryRef="dbPrestoSqlSessionFactory")
 @EnableTransactionManagement
 public class DatabasePrestoConfig {
 	private static final Logger log = LogManager.getLogger(DatabasePrestoConfig.class);
@@ -55,7 +55,7 @@ public class DatabasePrestoConfig {
     public SqlSessionFactory dbPrestoSqlSessionFactory(@Qualifier("dbPrestoDataSource") DataSource dbPrestoDataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dbPrestoDataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/ltmh/dao/presto/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/myelin/builder/dao/presto/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
  

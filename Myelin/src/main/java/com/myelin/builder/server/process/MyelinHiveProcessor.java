@@ -32,13 +32,14 @@ import com.myelin.builder.framework.core.orc.OrcRow;
 import com.myelin.builder.framework.core.orc.OrcRowInspector;
 import com.myelin.builder.framework.core.orc.OrcWriter;
 import com.myelin.builder.framework.util.OpenStringUtils;
+import com.myelin.builder.server.dto.MyelinPartitionInfo;
 import com.myelin.builder.server.hdfs.HadoopFileSystemUtil;
 import com.myelin.builder.server.manager.MyelinQueueManager;
 import com.myelin.builder.server.util.LtmhUtils;
 
 @Component
 @Scope("prototype")
-public class LtmhHiveProcessor implements Runnable {
+public class MyelinHiveProcessor implements Runnable {
 	private final Logger log = LogManager.getLogger(this.getClass());
 
 	private MyelinQueueManager myelinQueueManager;
@@ -92,19 +93,19 @@ public class LtmhHiveProcessor implements Runnable {
 		msgQueue = this.myelinQueueManager.getQueueByName("CREATE_PARTITION_EVENT");
 	}
 
-	public LtmhHiveProcessor() {
+	public MyelinHiveProcessor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void run() {
-		MyelinContentPlan takenMsg;
+		MyelinPartitionInfo takenMsg;
 		// TODO Auto-generated method stub
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				log.debug("Before taking message.....");
-				takenMsg = (MyelinContentPlan) msgQueue.take();
+				takenMsg = (MyelinPartitionInfo) msgQueue.take();
 				if (takenMsg.equals("##FORCE_STOP"))
 					break;
 				createPartition(takenMsg);
@@ -116,8 +117,8 @@ public class LtmhHiveProcessor implements Runnable {
 		}
 	}
 
-	private void createPartition(MyelinContentPlan cpObj) throws IOException {
-		String checkPartiton = "show partitions from ltmh_contents_plan where p_minute = '"+cpObj.getpMinute()+"'";
+	private void createPartition(MyelinPartitionInfo cpObj) throws IOException {
+		String checkPartiton = "show partitions from "+cpObj.getTableName()+" where p_minute = '"+cpObj.getpMinute()+"'";
 		
 		List<Map<String, Object>> list = prestoTemplate.queryForList(checkPartiton);
 		log.info("check presto show partition size: "+list.size());
@@ -126,7 +127,7 @@ public class LtmhHiveProcessor implements Runnable {
 		}
 		
 		if (list.size() == 0) {
-			hiveTemplate.execute("alter table ltmh_contents_plan add partition (p_year="+cpObj.getpYear()+", p_month="+cpObj.getpMonth()+", p_day="+cpObj.getpDay()+", p_hour="+cpObj.getpHour()+", p_minute="+cpObj.getpMinute()+")");
+			hiveTemplate.execute("alter table "+cpObj.getTableName()+" add partition (p_year="+cpObj.getpYear()+", p_month="+cpObj.getpMonth()+", p_day="+cpObj.getpDay()+", p_hour="+cpObj.getpHour()+", p_minute="+cpObj.getpMinute()+")");
 		}
 		
 	}

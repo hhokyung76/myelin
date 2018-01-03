@@ -33,13 +33,14 @@ import com.myelin.builder.framework.core.orc.OrcRow;
 import com.myelin.builder.framework.core.orc.OrcRowInspector;
 import com.myelin.builder.framework.core.orc.OrcWriter;
 import com.myelin.builder.framework.util.OpenStringUtils;
+import com.myelin.builder.server.dto.MyelinPartitionInfo;
 import com.myelin.builder.server.hdfs.HadoopFileSystemUtil;
 import com.myelin.builder.server.manager.MyelinQueueManager;
 import com.myelin.builder.server.util.LtmhUtils;
 
 @Component
 @Scope("prototype")
-public class LtmhOrcProcessor implements Runnable {
+public class MyelinOrcProcessor implements Runnable {
 	private final Logger log = LogManager.getLogger(this.getClass());
 
 	private MyelinQueueManager myelinQueueManager;
@@ -87,7 +88,7 @@ public class LtmhOrcProcessor implements Runnable {
 		msgQueue = this.myelinQueueManager.getQueueByName("ORC_WRITE_EVENT");
 	}
 
-	public LtmhOrcProcessor() {
+	public MyelinOrcProcessor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -102,7 +103,7 @@ public class LtmhOrcProcessor implements Runnable {
 				takenMsg = (MyelinContentPlan) msgQueue.take();
 				if (takenMsg.equals("##FORCE_STOP"))
 					break;
-				writeFile(takenMsg);
+				buildMyelinPlan(takenMsg);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -161,6 +162,15 @@ public class LtmhOrcProcessor implements Runnable {
 			cpObj.setpHour(myelinPartInfo.get("pHour"));
 			cpObj.setpMinute(myelinPartInfo.get("pMinute"));
 			
+			MyelinPartitionInfo pInfo = new MyelinPartitionInfo();
+			pInfo.setDbName("myelin");
+			pInfo.setTableName("myelin_contents_plan");
+			pInfo.setpYear(cpObj.getpYear());
+			pInfo.setpMonth(cpObj.getpMonth());
+			pInfo.setpDay(cpObj.getpDay());
+			pInfo.setpHour(cpObj.getpHour());
+			pInfo.setpMinute(cpObj.getpMinute());
+			
 			String fileName = LtmhUtils.getRandomUUID();
 			String path = "/apps/hive/warehouse/myelin.db/myelin_contents_plan/p_year=" + cpObj.getpYear() + "/p_month="
 					+ cpObj.getpMonth() + "/p_day=" + cpObj.getpDay() + "/p_hour=" + cpObj.getpHour() + "/p_minute="
@@ -211,6 +221,9 @@ public class LtmhOrcProcessor implements Runnable {
 				orcWriter.writer.addRow(orcRecord);
 
 				orcWriter.writer.close();
+				
+
+				this.myelinQueueManager.getQueueByName("CREATE_PARTITION_EVENT").put(pInfo);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

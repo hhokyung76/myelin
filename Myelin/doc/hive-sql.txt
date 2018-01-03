@@ -1,1 +1,5 @@
-alter table ltmh_contents_plan add partition (p_year=2017, p_month=201711, p_day=20171117, p_hour=2017111716, p_minute=201711171630);
+## add partition
+alter table myelin_contents_plan add partition (p_year=2017, p_month=201711, p_day=20171117, p_hour=2017111716, p_minute=201711171630);
+
+## drop partition
+alter table myelin_contents_plan drop partition (p_year=2017, p_month=201711, p_day=20171117, p_hour=2017111716, p_minute=201711171630);

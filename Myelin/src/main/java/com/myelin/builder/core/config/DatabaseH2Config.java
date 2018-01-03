@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@MapperScan(value="com.ltmh.dao.h2", sqlSessionFactoryRef="dbH2SqlSessionFactory")
+@MapperScan(value="com.myelin.builder.dao.h2", sqlSessionFactoryRef="dbH2SqlSessionFactory")
 @EnableTransactionManagement
 public class DatabaseH2Config {
 
@@ -46,7 +46,7 @@ public class DatabaseH2Config {
     public SqlSessionFactory dbH2SqlSessionFactory(@Qualifier("dbH2DataSource") DataSource dbH2DataSource, ApplicationContext applicationContext) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dbH2DataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/ltmh/dao/h2/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/myelin/builder/dao/h2/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
  

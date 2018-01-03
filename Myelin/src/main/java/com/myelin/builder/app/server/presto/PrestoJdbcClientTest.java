@@ -26,10 +26,10 @@ public class PrestoJdbcClientTest {
 		// replace "hive" here with the name of the user the queries should run
 		// as
 //		Connection con = DriverManager.getConnection("jdbc:presto://192.168.40.121:9987/hive/default/", "hdfs", "");
-		Connection con = DriverManager.getConnection("jdbc:presto://192.168.0.42:9087/hive/default/", "hdfs", "");
+		Connection con = DriverManager.getConnection("jdbc:presto://192.168.0.42:9087/hive/myelin/", "hdfs", "");
 		Statement stmt = con.createStatement();
 		
-		String query = "select * from airline";
+		String query = "select * from myelin_contents_plan";
 	    ResultSet rs = stmt.executeQuery(query);
 	    ResultSetMetaData rmd = rs.getMetaData();
 	    System.out.println("meta columnCount: "+rmd.getColumnCount());
