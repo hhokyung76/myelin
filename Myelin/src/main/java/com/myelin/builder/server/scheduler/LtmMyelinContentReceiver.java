@@ -46,7 +46,7 @@ public class LtmMyelinContentReceiver {
 	@Autowired
     private MailSessionManager mailSessionManager;
 	
-//	@Scheduled(cron = "10 0/5 * * * ?")
+	@Scheduled(cron = "10 0/5 * * * ?")
 	public void receiveContentFromMail() {
 		log.info("Doing..  Process..");
 		try {
@@ -125,7 +125,6 @@ public class LtmMyelinContentReceiver {
 
 				MyelinContentPlan planObj = new MyelinContentPlan();
 				planObj.setCustEmail(email);
-				planObj.setMyelinFlag("10");
 				planObj.setCustId(email);
 				planObj.setMyelinContent(realContent);
 				planObj.setMyelinSubject(message.getSubject());
@@ -133,16 +132,6 @@ public class LtmMyelinContentReceiver {
 				String firstTime = OpenStringUtils.getCurrentTimeFullDisplayHivePartitionMinute();
 				planObj.setFirstTime(firstTime);
 				
-				String partitionCurrTime = OpenStringUtils.get10MinuteLaterHivePartition(firstTime);
-				log.info("10 minute late: "+partitionCurrTime);
-				Map<String, String> partMap = OpenStringUtils.getHivePartitionMap(partitionCurrTime);
-				
-				planObj.setpYear(partMap.get("pYear"));
-				planObj.setpMonth(partMap.get("pMonth"));
-				planObj.setpDay(partMap.get("pDay"));
-				planObj.setpHour(partMap.get("pHour"));
-				planObj.setpMinute(partMap.get("pMinute"));
-
 				myelinQueueManager.getQueueByName("ORC_WRITE_EVENT").put(planObj);
 				
 			}
